@@ -1017,6 +1017,11 @@ func LocalBuildImage(w http.ResponseWriter, r *http.Request) {
 	buildImage(w, r, getLocalBuildContext)
 }
 
+// CancelBuild provides a Docker-compatible BuildKit cancel endpoint.
+func CancelBuild(w http.ResponseWriter, r *http.Request) {
+	utils.WriteResponse(w, http.StatusNoContent, nil)
+}
+
 // BuildImage handles HTTP requests for building container images using the Docker-compatible API.
 //
 // Extracts build contexts from the request body (tar/multipart), processes build parameters,

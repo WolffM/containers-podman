@@ -45,6 +45,7 @@ result
 # Necessary to prevent hack/tree-status.sh false-positive
 /*runner_stats.log
 .generate-bindings
+.env
 contrib/win-installer/artifacts/
 contrib/win-installer/current/
 contrib/win-installer/docs/

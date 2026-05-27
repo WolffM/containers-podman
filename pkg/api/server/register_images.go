@@ -769,6 +769,19 @@ func (s *APIServer) registerImagesHandlers(r *mux.Router) error {
 	r.Handle(VersionedPath("/build"), s.StreamBufferedAPIHandler(compat.BuildImage)).Methods(http.MethodPost)
 	// Added non version path to URI to support docker non versioned paths
 	r.Handle("/build", s.StreamBufferedAPIHandler(compat.BuildImage)).Methods(http.MethodPost)
+
+	// swagger:operation POST /build/cancel compat ImageBuildCancel
+	// ---
+	// tags:
+	//  - images (compat)
+	// summary: Cancel image build
+	// description: Cancel a BuildKit image build
+	// responses:
+	//   204:
+	//     description: no error
+	r.Handle(VersionedPath("/build/cancel"), s.APIHandler(compat.CancelBuild)).Methods(http.MethodPost)
+	// Added non version path to URI to support docker non versioned paths
+	r.Handle("/build/cancel", s.APIHandler(compat.CancelBuild)).Methods(http.MethodPost)
 	/*
 		libpod endpoints
 	*/

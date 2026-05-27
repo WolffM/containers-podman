@@ -15,6 +15,8 @@ If you want to change the default behavior or have a custom installation path fo
 
 By default, `podman compose` will emit a warning saying that it executes an external command. This warning can be disabled by setting `compose_warning_logs` to false in `containers.conf(5)` or setting the `PODMAN_COMPOSE_WARNING_LOGS` environment variable to false. See the man page for `containers.conf(5)` for more information.
 
+By default, `podman compose` sets `DOCKER_BUILDKIT=0` for the compose provider. To use BuildKit features, set `DOCKER_BUILDKIT` before invoking `podman compose` (for example, `DOCKER_BUILDKIT=1 podman compose build`).
+
 ## OPTIONS
 
 To see supported options of the installed compose provider, please run `podman compose --help`.

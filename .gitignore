@@ -40,6 +40,7 @@ release.txt
 /test/tools/build
 /test/e2e/ginkgo-node-*
 .vscode*
+.env
 tags
 result
 # Necessary to prevent hack/tree-status.sh false-positive

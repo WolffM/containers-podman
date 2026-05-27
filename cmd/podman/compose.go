@@ -26,7 +26,9 @@ var composeCommand = &cobra.Command{
 
 The default compose providers are docker-compose and podman-compose.  If installed, docker-compose takes precedence since it is the original implementation of the Compose specification and is widely used on the supported platforms (i.e., Linux, Mac OS, Windows).
 
-If you want to change the default behavior or have a custom installation path for your provider of choice, please change the compose_providers field in containers.conf(5) to compose_providers = ["/path/to/provider"]. You may also set the PODMAN_COMPOSE_PROVIDER environment variable.`,
+If you want to change the default behavior or have a custom installation path for your provider of choice, please change the compose_providers field in containers.conf(5) to compose_providers = ["/path/to/provider"]. You may also set the PODMAN_COMPOSE_PROVIDER environment variable.
+
+By default, podman compose sets DOCKER_BUILDKIT=0 for the compose provider but honors a user-specified DOCKER_BUILDKIT value.`,
 	RunE:              composeMain,
 	ValidArgsFunction: composeCompletion,
 	Example: `podman compose -f nginx.yaml up --detach
@@ -154,6 +156,11 @@ func composeEnv() ([]string, error) {
 		return nil, err
 	}
 
+	dockerBuildkitValue := "0"
+	if value, ok := os.LookupEnv("DOCKER_BUILDKIT"); ok {
+		dockerBuildkitValue = value
+	}
+
 	return []string{
 		"DOCKER_HOST=" + hostValue,
 		// Podman doesn't support all buildkit features and since it's
@@ -161,7 +168,7 @@ func composeEnv() ([]string, error) {
 		// side.
 		//
 		// See https://github.com/containers/podman/issues/18617#issuecomment-1600495841
-		"DOCKER_BUILDKIT=0",
+		"DOCKER_BUILDKIT=" + dockerBuildkitValue,
 		// FIXME: DOCKER_CONFIG is limited by containers/podman/issues/18617
 		//        and it remains unclear which default path should be set
 		//        w.r.t. Docker compatibility and a smooth experience of podman-login
